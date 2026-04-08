@@ -8,6 +8,8 @@ import com.senai.projeto.service.ProjetoService;
 import com.senai.projeto.service.TarefaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,22 +22,26 @@ public class TarefaController {
     private final TarefaService service;
 
     @PostMapping
-    public TarefaResposta cadastrarTarefa (@Valid @RequestBody TarefaRequisicao requisicao) {
-        return service.cadastrarTarefa(requisicao);
+    public ResponseEntity<TarefaResposta> cadastrarTarefa (@Valid @RequestBody TarefaRequisicao requisicao) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(service.cadastrarTarefa(requisicao));
     }
 
     @GetMapping
-    public List<TarefaResposta> listarTarefas () {
-        return service.listarTarefas();
+    public ResponseEntity<List<TarefaResposta>> listarTarefas () {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(service.listarTarefas());
     }
 
     @GetMapping("/id-titulo")
-    public List<TarefaResposta> buscarPorIdTitulo (@RequestParam Long idProjeto, @RequestParam String titulo) {
-        return service.buscarPorIdTitulo(idProjeto, titulo);
+    public ResponseEntity<List<TarefaResposta>> buscarPorIdTitulo (@RequestParam Long idProjeto, @RequestParam String titulo) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(service.buscarPorIdTitulo(idProjeto, titulo));
     }
 
     @GetMapping("/titulo")
-    public List<TarefaResposta> buscarPorTitulo (@RequestParam String titulo) {
-        return service.buscarPorTitulo(titulo);
+    public ResponseEntity<List<TarefaResposta>> buscarPorTitulo (@RequestParam String titulo) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(service.buscarPorTitulo(titulo));
     }
 }
